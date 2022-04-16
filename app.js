@@ -6,15 +6,17 @@ const { port, MONGO_URI } = process.env;
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors()); 
+app.use(cors());
 const APP = './app/routes'
 const nodes = ['basic','board','user']
+//const nodes = ['admin','basic','game','board','todo','user']
+//const
 for(const leaf of nodes){
-require(`${APP}/${leaf}.route`)({url:`/api/${leaf}`,app})}
-
+  require(`${APP}/${leaf}.route`)({url:`/api/${leaf}`,app})
+}
 const corsOptions = {
   origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200 
+  optionsSuccessStatus: 200
 }
 const db = require('./app/models/index')
 db.mongoose
@@ -22,7 +24,7 @@ db.mongoose
   .then(() => {
     console.log(' ### 몽고DB 연결 성공 ### ')
   })
-  .catch(err => { console.log(' 몽고DB와 연결 실패', err)
+  .catch(err => { console.log('몽고DB와 연결 실패',err)
         process.exit();
 });
 app.listen(port, () => {
@@ -36,4 +38,3 @@ app.get('/', (req, res) => {
 app.get('/api/now', cors(corsOptions),(req, res) => {
   res.json({"now":new Date().toLocaleString()})
 })
-//안녕
