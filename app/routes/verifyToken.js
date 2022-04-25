@@ -1,11 +1,13 @@
-const jwt = require('jsonwebtoken');
-exports.verifyToken = (req, res, next) => {
+import jwt from 'jsonwebtoken'
+
+export default function VerifyToken(req, res, next){
   // 인증 완료
   try {
     req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
     return next();
   }
-  // 인증 실패
+  
+  // 인증 실패 
   catch(error) {
     if (error.name === 'TokenExpireError') {
       return res.status(419).json({
